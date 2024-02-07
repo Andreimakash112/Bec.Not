@@ -6,12 +6,12 @@ const Product = new Schema({
         required: true
     },
     price:{
-        tupe: String,
-        required: true
+        tupe: Number,
+       
     },
     image: {
         tupe: String,
-        required: true
+       
     }
 })
 module.exports = model('Product' , Product)
