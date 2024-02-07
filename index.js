@@ -6,15 +6,17 @@ const mongoose = require ('mongoose')
 const jwt = require ('jsonwebtoken')
 const User = require('./models/User')
 const Product = require('./models/Product')
+const User = require('./models/User')
 const app = express()
 
 app.use(cors())
 app.use(express.json())
 
-app.post('/registration',  (req, res) => {
+app.post('/registration', async (req, res) => {
         console.log(req.body)
         const {login, password, email} = req.body
-
+        const user = new User({login, password, email})
+        await user.save()
         res.json({
             message: 'Вы успешно зарегистрировались !!!'
         })
