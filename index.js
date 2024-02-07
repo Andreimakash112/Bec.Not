@@ -1,5 +1,5 @@
 const PORT = 9001
-
+const URLDB = 'mongodb://127.0.0.1:27017'
 const express = require ('express')
 const cors = require ('cors')
 const mongoose = require ('mongoose')
@@ -39,8 +39,9 @@ app.post('/registration',  (req, res) => {
         })
     })
 
-const start = () => {
+const start = async () => {
     try {
+        await mongoose.connect(URLDB, { authSource: "admin"})
         app.listen(PORT, () => console.log(`сервер запущен на ${PORT} порте`));
     } catch(e) {
         console.log(e);
