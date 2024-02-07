@@ -4,6 +4,7 @@ const express = require ('express')
 const cors = require ('cors')
 const mongoose = require ('mongoose')
 const jwt = require ('jsonwebtoken')
+const User = require('./models/User')
 
 const app = express()
 
@@ -12,6 +13,8 @@ app.use(express.json())
 
 app.post('/registration',  (req, res) => {
         console.log(req.body)
+        const {login, password, email} = req.body
+
         res.json({
             message: 'Вы успешно зарегистрировались !!!'
         })
