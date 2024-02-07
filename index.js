@@ -10,6 +10,10 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 
+app.post('/registration',  (req, res) => {
+        console.log(req.body)
+    })
+
 const start = () => {
     try {
         app.listen(PORT, () => console.log(`сервер запущен на ${PORT} порте`));
@@ -17,3 +21,5 @@ const start = () => {
         console.log(e);
     }
 }
+
+start()
