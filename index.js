@@ -12,6 +12,15 @@ app.use(express.json())
 
 app.post('/registration',  (req, res) => {
         console.log(req.body)
+        res.json({
+            message: 'Вы успешно зарегистрировались !!!'
+        })
+    })
+    app.post('/login',  (req, res) => {
+        console.log(req.body)
+        res.json({
+            message: 'Вы успешно авторизованы !!!'
+        })
     })
 
 const start = () => {
