@@ -5,7 +5,7 @@ const cors = require ('cors')
 const mongoose = require ('mongoose')
 const jwt = require ('jsonwebtoken')
 const User = require('./models/User')
-
+const Product = require('./models/Product')
 const app = express()
 
 app.use(cors())
