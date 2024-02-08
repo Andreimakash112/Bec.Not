@@ -2,17 +2,17 @@ const{ Schema, model } = require('mongoose')
 
 const User = new Schema({
     login:{
-        tupe: String,
+        type: String,
         uniqued: true,
         required: true
     },
     password:{
-        tupe: String,
+        type: String,
         required: true
     },
     email: {
-        tupe: String,
+        type: String,
         required: true
     }
 })
-module.exports = model('User' , User)
+module.exports = model('User',User)

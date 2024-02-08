@@ -2,15 +2,15 @@ const{ Schema, model } = require('mongoose')
 
 const Product = new Schema({
     header:{
-        tupe: String,
+        type: String,
         required: true
     },
     price:{
-        tupe: Number,
+        type: Number
        
     },
     image: {
-        tupe: String,
+        type: String
        
     }
 })
