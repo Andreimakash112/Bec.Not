@@ -11,6 +11,15 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 
+//создание секретного ключа начало
+const generateAccessToken = (id) => {
+
+    const payload = {
+        id
+    }
+    return jwt.sign(payload , secret ,{exspiresIn: '24h'})
+}
+//конец
 app.post('/registration', async (req, res) => {
         console.log(req.body)
         const { login, password, email} = req.body
@@ -31,8 +40,10 @@ app.post('/registration', async (req, res) => {
             return res.status(400).json({ message: 'Неверный логин или пароль' })
         }
          else {
+            const token = generateAccessToken (User._id)
             res.json({
-                message: 'Вы успешно авторизованы !!!'
+                message: 'Вы успешно авторизованы !!!',
+                token: token
             })
         }
     })
