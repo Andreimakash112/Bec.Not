@@ -18,7 +18,7 @@ const generateAccessToken = (id) => {
     const payload = {
         id
     }
-    return jwt.sign(payload , secret ,{exspiresIn: '24h'})
+    return jwt.sign(payload , secret ,{expiresIn: '24h'})
 }
 //конец
 app.post('/registration', async (req, res) => {
@@ -49,8 +49,8 @@ app.post('/registration', async (req, res) => {
         }
     })
     
-    app.get('/products',  (req, res) => {
-        const products = [
+    app.get('/products', async (req, res) => {
+       /* const products = [
 
             {id:1,  header: 'Товар 1', price: 12000 }, 
             {id:2,  header: 'Товар 2', price: 14000 },
@@ -60,7 +60,8 @@ app.post('/registration', async (req, res) => {
             {id:6,  header: 'Товар 6', price: 22000 }, 
             {id:7,  header: 'Товар 7', price: 25000 } 
             
-          ]
+          ]*/
+          const products = await Product.find()//вывести все с базы данных значение Product
         res.json({
             data: products
         })
