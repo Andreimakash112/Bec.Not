@@ -20,12 +20,23 @@ app.post('/registration', async (req, res) => {
             message: 'Вы успешно зарегистрировались !!!'
         })
     })
-    app.post('/login',  (req, res) => {
+    app.post('/login', async (req, res) => {
         console.log(req.body)
-        res.json({
-            message: 'Вы успешно авторизованы !!!'
-        })
+        const { login, password } = req.body
+        const user = await User.findOne({login})
+        if (!user) {
+            return res.status(400).json({ message: 'Пользователь не найден' })
+        }
+        if (user.password !==password  ) {
+            return res.status(400).json({ message: 'Неверный логин или пароль' })
+        }
+         else {
+            res.json({
+                message: 'Вы успешно авторизованы !!!'
+            })
+        }
     })
+    
     app.get('/products',  (req, res) => {
         const products = [
 
