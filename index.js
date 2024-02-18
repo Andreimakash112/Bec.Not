@@ -12,18 +12,16 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 
-//создание секретного ключа начало
-const generateAccessToken = (id) => {
-
+const generateAccessToken = (id,login, password,email) => {
     const payload = {
-        id
-    }
-    return jwt.sign(payload , secret ,{expiresIn: '24h'})
+        id,login, password,email
+    };
+    return jwt.sign(payload, secret, {expiresIn: '24h'});
+
 }
-//конец
 app.post('/registration', async (req, res) => {
         console.log(req.body)
-        const { login, password, email} = req.body
+        const { login:login, password:password, email:email} = req.body
         const user = new User({login, password, email})
        await user.save()
         res.json({
@@ -41,13 +39,15 @@ app.post('/registration', async (req, res) => {
             return res.status(400).json({ message: 'Неверный логин или пароль' })
         }
          else {
-            const token = generateAccessToken (User._id)
+            const token = generateAccessToken (user._id,user.login,user.password,user.email)
             res.json({
                 message: 'Вы успешно авторизованы !!!',
                 token: token
             })
         }
     })
+    //
+    
     
     app.get('/products', async (req, res) => {
        /* const products = [
@@ -75,5 +75,27 @@ const start = async () => {
         console.log(e);
     }
 }
+app.post('/products/add', async (req, res) => {
+    console.log(req.body)
+    const { header, price } = req.body
+    const product = new Product({ header, price })
+
+    try {
+        await product.save()
+    } catch (err) {
+        if (err && err.code !== 11000) {
+            res.json({
+                message: 'Неизвестная ошибка!'
+            })
+                .status(500)
+
+            return
+        }
+    }
+
+    res.json({
+        message: 'Товар успешно добавлен! Обновите страницу для получения изменений.'
+    })
+})
 
 start()
