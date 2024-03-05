@@ -8,7 +8,8 @@ const {secret} = require('./config')
 const User = require ('./models/User')
 const Product = require ('./models/Product')
 const app = express()
-const { jwtDecode } = require('jwt-decode');
+
+
 app.use(cors())
 app.use(express.json())
 
@@ -40,23 +41,12 @@ app.post('/registration', async (req, res) => {
         }
          else {
             const token = generateAccessToken (user._id,user.login,user.password,user.email)
-
-            
-
-
             res.json({
-
-
                 message: 'Вы успешно авторизованы !!!',
                 token: token
-            }
-
-            )
-
-
+            })
         }
     })
-    //
     
     
     app.get('/products', async (req, res) => {
