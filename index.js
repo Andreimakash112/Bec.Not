@@ -3,12 +3,12 @@ const URLDB = 'mongodb://127.0.0.1:27017'
 const express = require ('express')
 const cors = require ('cors')
 const mongoose = require ('mongoose')
-const jwt = require ('jsonwebtoken')
+const jsonwebtoken = require('jsonwebtoken')
 const {secret} = require('./config')
 const User = require ('./models/User')
 const Product = require ('./models/Product')
 const app = express()
-
+const { jwtDecode } = require('jwt-decode');
 app.use(cors())
 app.use(express.json())
 
@@ -16,7 +16,7 @@ const generateAccessToken = (id,login, password,email) => {
     const payload = {
         id,login, password,email
     };
-    return jwt.sign(payload, secret, {expiresIn: '24h'});
+    return jsonwebtoken.sign(payload, secret, {expiresIn: '24h'});
 
 }
 app.post('/registration', async (req, res) => {
@@ -40,10 +40,20 @@ app.post('/registration', async (req, res) => {
         }
          else {
             const token = generateAccessToken (user._id,user.login,user.password,user.email)
+
+            
+
+
             res.json({
+
+
                 message: 'Вы успешно авторизованы !!!',
                 token: token
-            })
+            }
+
+            )
+
+
         }
     })
     //
@@ -97,5 +107,36 @@ app.post('/products/add', async (req, res) => {
         message: 'Товар успешно добавлен! Обновите страницу для получения изменений.'
     })
 })
+app.post('/user/newPassword', async (req, res) => {
+    console.log(req.body)
+    const { token, password } = req.body
+    let user
+
+    try {
+        user = await User.findOneAndUpdate( { login: jsonwebtoken.verify(token, secret).login },
+            {password : password   }, { returnOriginal: false })
+
+        if (user === null) {
+            res.json({
+                message: 'Пользователь отсутствует в базе.'
+            })
+                .status(400)
+        }
+    } catch (err) {
+        res.json({
+            message: 'Неизвестная ошибка.'
+        })
+            .status(500)
+
+        return
+    }
+
+    res.json({
+        message: 'Пароль изменён! выйдите и зайдите под новым паролем'
+       
+    })
+})
+
+
 
 start()
